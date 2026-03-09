@@ -38,6 +38,7 @@ export default function TabsLayout() {
         name="index"
         options={{
           title: "Home",
+          headerTitle: "My Application",
         }}
       />
 
@@ -45,6 +46,7 @@ export default function TabsLayout() {
         name="tasks"
         options={{
           title: "Tasks",
+          headerShown: false,
         }}
       />
 
