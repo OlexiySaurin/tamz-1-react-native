@@ -18,6 +18,12 @@ export default function Tasks() {
         description="Simple CRUD app - a list that saves the data locally."
         onPress={() => router.push("/tasks/localstorage")}
       />
+
+      <TaskItem
+        title="Task 3 – BMI Calculator"
+        description="Calculate Body Mass Index"
+        onPress={() => router.push("/tasks/bmi")}
+      />
     </ScrollView>
   );
 }

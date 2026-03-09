@@ -9,7 +9,11 @@ export default function TasksLayout() {
 
       <Stack.Screen
         name="localstorage"
-        options={{ title: "Local Storage Task" }}
+        options={{ title: "Local Storage" }}
+      />
+      <Stack.Screen
+        name="bmi"
+        options={{ title: "BMI Calculator" }}
       />
     </Stack>
   );
