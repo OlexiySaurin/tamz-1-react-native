@@ -1,6 +1,7 @@
 import { calculateDaysDifference } from "@/utils/dateCalculations";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
+import Toast from "react-native-toast-message";
 
 type TermListItemType = {
   title: string;
@@ -14,6 +15,13 @@ type Props = {
 export default function TermListItem({ item }: Props) {
   const today = new Date();
   const timeDifferenceDays = calculateDaysDifference(today, item.date);
+
+  if (timeDifferenceDays >= 0 && timeDifferenceDays <= 7) {
+    Toast.show({
+      type: "error",
+      text1: `Termin pro "${item.title}" je už za ${timeDifferenceDays} dny!`,
+    });
+  }
 
   const itemStyle =
     timeDifferenceDays < 0
