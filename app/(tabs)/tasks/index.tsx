@@ -8,9 +8,14 @@ export default function Tasks() {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <TaskItem
-        title="Task 1 – 📆 Working with Date and Time"
+        title="🎂 How many days left until birthday?"
         description="Show the current date and a birthday picker that calculates the number of days remaining until the next birthday."
-        onPress={() => router.push("/tasks/datetime")}
+        onPress={() => router.push("/tasks/birthday")}
+      />
+      <TaskItem
+        title="🗓️ Terminy"
+        description="Calculate Body Mass Index"
+        onPress={() => router.push("/tasks/terminy")}
       />
 
       <TaskItem

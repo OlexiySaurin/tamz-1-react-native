@@ -2,7 +2,7 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import React, { useState } from "react";
 import { Button, Platform, StyleSheet, Text, View } from "react-native";
 
-export default function DateTimeTask() {
+export default function BirthdayCalc() {
   const currentDate = new Date();
 
   const birthdayFrom = new Date();
