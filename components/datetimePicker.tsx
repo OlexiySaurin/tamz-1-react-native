@@ -5,13 +5,18 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 
 type Props = {
   selectedDate: Date;
-  setSelectedDate: React.Dispatch<React.SetStateAction<Date | undefined>>;
+  setSelectedDate: React.Dispatch<React.SetStateAction<Date>>;
+  dateFrom: Date;
 };
 
-export default function DatePicker({ selectedDate, setSelectedDate }: Props) {
+export default function DatePicker({
+  selectedDate,
+  setSelectedDate,
+  dateFrom,
+}: Props) {
   const [open, setOpen] = useState(false);
 
-  const setDate = (date: Date | undefined) => {
+  const setDate = (date: Date) => {
     setSelectedDate(date);
     setOpen(false);
   };
@@ -24,7 +29,8 @@ export default function DatePicker({ selectedDate, setSelectedDate }: Props) {
             <DateTimePicker
               mode="date"
               value={selectedDate}
-              onChange={(e, value) => setDate(value)}
+              minimumDate={dateFrom}
+              onChange={(e, value) => setDate(value!)}
             />
           )}
           <Button
@@ -36,7 +42,8 @@ export default function DatePicker({ selectedDate, setSelectedDate }: Props) {
         <DateTimePicker
           mode="date"
           value={selectedDate}
-          onChange={(e, value) => setDate(value)}
+          minimumDate={dateFrom}
+          onChange={(e, value) => setDate(value!)}
         />
       )}
     </>

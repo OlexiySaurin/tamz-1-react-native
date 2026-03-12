@@ -19,3 +19,10 @@ export function calculateTimeDifference(startDate: Date, endDate: Date) {
     seconds,
   };
 }
+
+export function calculateDaysDifference(startDate: Date, endDate: Date) {
+  let start = new Date(startDate);
+  let end = new Date(endDate);
+  let timeDifference = end.getTime() - start.getTime();
+  return Math.ceil(timeDifference / 86_400_000);
+}
