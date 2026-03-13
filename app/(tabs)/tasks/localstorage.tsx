@@ -1,33 +1,30 @@
 import ListItem from "@/components/listItem";
+import { storage } from "@/utils/storage";
 import React, { useState } from "react";
-import { Button, Platform, StyleSheet, Text, TextInput, View } from "react-native";
+import { Button, StyleSheet, Text, TextInput, View } from "react-native";
 
 export default function LocalStorageTask() {
   const [newItem, setNewItem] = useState("");
   const [list, setList] = useState<string[]>(() => {
-    if (Platform.OS === "web"){
-      return JSON.parse(localStorage.getItem("list") ?? "[]") 
-    }
-    return []
-  })
+    return JSON.parse(storage.getString("list") ?? "[]");
+  });
 
-  const saveListTolocalStorage = () => {
-    if (Platform.OS !== "web") return
-    localStorage.setItem("list", JSON.stringify(list))
-  }
+  const saveListTolocalStorage = (lst: string[]) => {
+    storage.set("list", JSON.stringify(lst));
+  };
 
   const addItem = (item: string) => {
-    if (!item.trim()) return
+    if (!item.trim()) return;
 
-    setList([...list, item])
-    setNewItem("")
-    saveListTolocalStorage();
-  }
+    setList([...list, item]);
+    setNewItem("");
+    saveListTolocalStorage([...list, item]);
+  };
 
   const deleteItem = (index: number) => {
-    setList([...list.slice(0, index), ...list.slice(index + 1)])
-    saveListTolocalStorage();
-  }
+    setList([...list.slice(0, index), ...list.slice(index + 1)]);
+    saveListTolocalStorage([...list.slice(0, index), ...list.slice(index + 1)]);
+  };
 
   return (
     <View style={styles.container}>
@@ -40,11 +37,14 @@ export default function LocalStorageTask() {
         />
 
         <View style={styles.buttonSpacing}>
-          <Button title="Add new element to the list" onPress={() => addItem(newItem)}/>
+          <Button
+            title="Add new element to the list"
+            onPress={() => addItem(newItem)}
+          />
         </View>
 
         <View style={styles.buttonSpacing}>
-          <Button title="Clear list" color="red" onPress={() => setList([])}/>
+          <Button title="Clear list" color="red" onPress={() => setList([])} />
         </View>
       </View>
 
