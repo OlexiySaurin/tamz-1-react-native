@@ -20,7 +20,10 @@ export function calculateTimeDifference(startDate: Date, endDate: Date) {
   };
 }
 
-export function calculateDaysDifference(startDate: Date, endDate: Date) {
+export function calculateDaysDifference(
+  startDate: Date | string,
+  endDate: Date | string,
+) {
   let start = new Date(startDate);
   let end = new Date(endDate);
   let timeDifference = end.getTime() - start.getTime();

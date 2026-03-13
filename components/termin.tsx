@@ -5,7 +5,7 @@ import Toast from "react-native-toast-message";
 
 type TermListItemType = {
   title: string;
-  date: Date;
+  date: Date | string;
 };
 
 type Props = {
