@@ -1,6 +1,7 @@
 import ListItem from "@/components/listItem";
 import { storage } from "@/utils/storage";
-import React, { useState } from "react";
+import { useNavigation } from "@react-navigation/native";
+import React, { useEffect, useState } from "react";
 import { Button, StyleSheet, Text, TextInput, View } from "react-native";
 
 export default function LocalStorageTask() {
@@ -12,6 +13,16 @@ export default function LocalStorageTask() {
   const saveListTolocalStorage = (lst: string[]) => {
     storage.set("list", JSON.stringify(lst));
   };
+
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <Button title="Remove All" onPress={() => clearList()} />
+      ),
+    });
+  }, [navigation]);
 
   const addItem = (item: string) => {
     if (!item.trim()) return;
@@ -26,6 +37,11 @@ export default function LocalStorageTask() {
     saveListTolocalStorage([...list.slice(0, index), ...list.slice(index + 1)]);
   };
 
+  const clearList = () => {
+    setList([]);
+    saveListTolocalStorage([]);
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.inputContainer}>
@@ -37,14 +53,7 @@ export default function LocalStorageTask() {
         />
 
         <View style={styles.buttonSpacing}>
-          <Button
-            title="Add new element to the list"
-            onPress={() => addItem(newItem)}
-          />
-        </View>
-
-        <View style={styles.buttonSpacing}>
-          <Button title="Clear list" color="red" onPress={() => setList([])} />
+          <Button title="Add" onPress={() => addItem(newItem)} />
         </View>
       </View>
 
