@@ -31,7 +31,7 @@ export default function Tasks() {
       />
 
       <TaskItem
-        title="BMI Calculator"
+        title="⚖️ BMI Calculator"
         description="Calculate Body Mass Index"
         onPress={() => router.push("/tasks/bmi")}
       />
