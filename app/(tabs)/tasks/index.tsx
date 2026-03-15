@@ -20,7 +20,7 @@ export default function Tasks() {
 
       <TaskItem
         title="💾 Local Storage: Simple List"
-        description="SA list that saves the data locally."
+        description="A list that saves the data locally."
         onPress={() => router.push("/tasks/localstorage")}
       />
 
