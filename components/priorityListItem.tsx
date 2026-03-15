@@ -3,6 +3,7 @@ import React from "react";
 import { Button, StyleSheet, Text, View } from "react-native";
 
 export type Priority = "high" | "medium" | "low";
+
 export type PriorityItem = {
   text: string;
   priority: Priority;
@@ -16,34 +17,72 @@ export default function PriorityListItem({
   deleteItem: (text: string, priority: Priority) => void;
 }) {
   const iconName =
-    item.priority == "low"
+    item.priority === "low"
       ? "checkmark-circle"
-      : item.priority == "medium"
+      : item.priority === "medium"
         ? "warning"
         : "alert-circle";
+
   const iconColor =
-    item.priority == "low"
+    item.priority === "low"
       ? "green"
-      : item.priority == "medium"
-        ? "yellow"
+      : item.priority === "medium"
+        ? "#f5b700"
         : "red";
+
   return (
-    <View>
-      <Text>
-        <Ionicons name={iconName} size={24} color={iconColor} />
-      </Text>
-      <View>
-        <Text>{item.text}</Text>
-        <Text>Priority: {item.priority}</Text>
+    <View style={styles.container}>
+      <View style={styles.iconContainer}>
+        <Ionicons name={iconName} size={26} color={iconColor} />
       </View>
-      {/* icons needs to be on the left, the size of both 1 and 2 text, they are on the right */}
-      <Button
-        title="Delete"
-        onPress={() => deleteItem(item.text, item.priority)}
-      />
-      {/* needs to be slided left for button appearing and deleting*/}
+
+      <View style={styles.textContainer}>
+        <Text style={styles.itemText}>{item.text}</Text>
+        <Text style={styles.priorityText}>Priority: {item.priority}</Text>
+      </View>
+
+      <View style={styles.deleteButton}>
+        <Button
+          title="Delete"
+          color="#ff4d4d"
+          onPress={() => deleteItem(item.text, item.priority)}
+        />
+      </View>
     </View>
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "white",
+    padding: 14,
+    borderRadius: 10,
+    marginBottom: 10,
+    elevation: 2,
+  },
+
+  iconContainer: {
+    marginRight: 12,
+  },
+
+  textContainer: {
+    flex: 1,
+  },
+
+  itemText: {
+    fontSize: 16,
+    fontWeight: "600",
+  },
+
+  priorityText: {
+    fontSize: 13,
+    color: "#666",
+    marginTop: 2,
+  },
+
+  deleteButton: {
+    marginLeft: 10,
+  },
+});

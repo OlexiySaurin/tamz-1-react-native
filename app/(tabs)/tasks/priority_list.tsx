@@ -13,7 +13,7 @@ import {
   TextInput,
   View,
 } from "react-native";
-import Dropdown from "react-native-input-select";
+import RNPickerSelect from "react-native-picker-select";
 
 type PriorityListType = {
   high: PriorityItem[];
@@ -24,6 +24,7 @@ type PriorityListType = {
 export default function PriorityList() {
   const [itemText, setItemText] = useState("");
   const [itemPriority, setItemPriority] = useState<Priority>("low");
+
   const [list, setList] = useState<PriorityListType>(() => {
     const lst = storage.getString("priorityList");
 
@@ -47,9 +48,9 @@ export default function PriorityList() {
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <View>
-          <Text>{flatList.length}</Text>
-          <Button title="Remove All" onPress={() => clearList()} />
+        <View style={styles.headerRight}>
+          <Text style={styles.counterText}>{flatList.length}</Text>
+          <Button title="Clear" onPress={clearList} />
         </View>
       ),
     });
@@ -57,75 +58,121 @@ export default function PriorityList() {
 
   const addItem = (text: string, priority: Priority) => {
     if (!text.trim()) return;
-    setList({
+
+    const newList = {
       ...list,
       [priority]: [...list[priority], { text, priority }],
-    });
+    };
+
+    setList(newList);
+    saveListTolocalStorage(newList);
     setItemText("");
-    saveListTolocalStorage({
-      ...list,
-      [priority]: [...list[priority], { text, priority }],
-    });
   };
 
   const deleteItem = (text: string, priority: Priority) => {
-    setList({
+    const newList = {
       ...list,
       [priority]: list[priority].filter((item) => item.text !== text),
-    });
-    saveListTolocalStorage({
-      ...list,
-      [priority]: list[priority].filter((item) => item.text !== text),
-    });
+    };
+
+    setList(newList);
+    saveListTolocalStorage(newList);
   };
 
   const clearList = () => {
-    setList({
-      high: [],
-      medium: [],
-      low: [],
-    });
-    saveListTolocalStorage({
-      high: [],
-      medium: [],
-      low: [],
-    });
-  };
-  return (
-    <View>
-      <View>
-        <Text>1</Text>
-        {/* <Button title="Remove All"/> */}
-      </View>
+    const empty = { high: [], medium: [], low: [] };
 
+    setList(empty);
+    saveListTolocalStorage(empty);
+  };
+
+  return (
+    <View style={styles.container}>
       <FlatList
+        style={styles.list}
         data={flatList}
         renderItem={({ item }) => (
           <PriorityListItem item={item} deleteItem={deleteItem} />
         )}
         keyExtractor={(item) => item.text}
       />
-      <View>
-        <Text>Item: </Text>
+
+      <View style={styles.inputSection}>
+        <Text style={styles.label}>Item</Text>
+
         <TextInput
+          style={styles.input}
           placeholder="Item Name"
           onChangeText={(text) => setItemText(text)}
           value={itemText}
         />
-        <Dropdown
+
+        <RNPickerSelect
           placeholder="Select priority"
-          options={[
+          items={[
             { label: "Low", value: "low" },
             { label: "Medium", value: "medium" },
             { label: "High", value: "high" },
           ]}
-          selectedValue={itemPriority}
+          value={itemPriority}
           onValueChange={(priority) => setItemPriority(priority as Priority)}
         />
-        <Button title="Add" onPress={() => addItem(itemText, itemPriority)} />
+
+        <View style={styles.addButton}>
+          <Button
+            title="Add Item"
+            onPress={() => addItem(itemText, itemPriority)}
+          />
+        </View>
       </View>
     </View>
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 16,
+    backgroundColor: "#f4f4f4",
+  },
+
+  list: {
+    marginBottom: 20,
+  },
+
+  headerRight: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+  },
+
+  counterText: {
+    fontSize: 16,
+    fontWeight: "600",
+  },
+
+  inputSection: {
+    backgroundColor: "white",
+    padding: 15,
+    borderRadius: 10,
+    elevation: 3,
+  },
+
+  label: {
+    fontSize: 14,
+    marginBottom: 6,
+    fontWeight: "500",
+  },
+
+  input: {
+    borderWidth: 1,
+    borderColor: "#ddd",
+    padding: 10,
+    borderRadius: 8,
+    marginBottom: 10,
+  },
+
+  addButton: {
+    marginTop: 10,
+  },
+});
